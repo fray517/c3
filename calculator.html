@@ -77,7 +77,7 @@
             width: 100%;
             position: relative;
             display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+            grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
             gap: 20px;
         }
 
@@ -330,6 +330,22 @@
                 <span class="theme-toggle-thumb"></span>
             </button>
         </div>
+        <aside class="history" aria-label="Журнал операций">
+            <div class="history-header">
+                <div class="history-title">
+                    <span>Журнал</span>
+                    <span aria-hidden="true">🧮</span>
+                </div>
+                <button class="history-clear" type="button" onclick="clearHistory()">
+                    Очистить
+                </button>
+            </div>
+            <div id="history-list" class="history-list">
+                <div class="history-empty" id="history-empty">
+                    Пока нет записей. Выполните вычисление, чтобы увидеть его здесь.
+                </div>
+            </div>
+        </aside>
         <div class="calculator-main">
             <div class="display" id="display">0</div>
             <div class="buttons">
@@ -357,22 +373,6 @@
                 <button onclick="appendDecimal()">.</button>
             </div>
         </div>
-        <aside class="history" aria-label="Журнал операций">
-            <div class="history-header">
-                <div class="history-title">
-                    <span>Журнал</span>
-                    <span aria-hidden="true">🧮</span>
-                </div>
-                <button class="history-clear" type="button" onclick="clearHistory()">
-                    Очистить
-                </button>
-            </div>
-            <div id="history-list" class="history-list">
-                <div class="history-empty" id="history-empty">
-                    Пока нет записей. Выполните вычисление, чтобы увидеть его здесь.
-                </div>
-            </div>
-        </aside>
     </div>
 
     <script>
