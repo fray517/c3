@@ -73,9 +73,18 @@
             border-radius: 20px;
             box-shadow: var(--calc-shadow);
             padding: 30px;
-            max-width: 400px;
+            max-width: 760px;
             width: 100%;
             position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+            gap: 20px;
+        }
+
+        .calculator-main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .display {
@@ -210,6 +219,105 @@
         .zero {
             grid-column: span 2;
         }
+
+        .history {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.02);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            max-height: 320px;
+            overflow: hidden;
+        }
+
+        body.dark-theme .history {
+            background: rgba(15, 23, 42, 0.65);
+            border-color: rgba(148, 163, 184, 0.6);
+        }
+
+        .history-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(15, 23, 42, 0.7);
+        }
+
+        body.dark-theme .history-header {
+            color: rgba(226, 232, 240, 0.85);
+        }
+
+        .history-title {
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .history-clear {
+            background: transparent;
+            border-radius: 999px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            color: rgba(148, 163, 184, 0.95);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            font-weight: 500;
+        }
+
+        .history-clear:hover {
+            background: rgba(148, 163, 184, 0.08);
+        }
+
+        .history-list {
+            margin-top: 4px;
+            padding-right: 4px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .history-item {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco,
+                Consolas, 'Liberation Mono', 'Courier New', monospace;
+            font-size: 0.85rem;
+            padding: 6px 8px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            background: rgba(148, 163, 184, 0.08);
+            color: rgba(15, 23, 42, 0.85);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        body.dark-theme .history-item {
+            background: rgba(15, 23, 42, 0.9);
+            color: rgba(226, 232, 240, 0.95);
+        }
+
+        .history-expression {
+            opacity: 0.85;
+        }
+
+        .history-result {
+            font-weight: 600;
+        }
+
+        .history-empty {
+            font-size: 0.85rem;
+            color: rgba(148, 163, 184, 0.9);
+        }
+
+        @media (max-width: 720px) {
+            .calculator {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .history {
+                max-height: 220px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -222,37 +330,58 @@
                 <span class="theme-toggle-thumb"></span>
             </button>
         </div>
-        <div class="display" id="display">0</div>
-        <div class="buttons">
-            <button class="clear" onclick="clearDisplay()">C</button>
-            <button class="operator" onclick="appendOperator('/')">/</button>
-            <button class="operator" onclick="appendOperator('*')">×</button>
-            <button class="operator" onclick="deleteLast()">⌫</button>
-            
-            <button onclick="appendNumber('7')">7</button>
-            <button onclick="appendNumber('8')">8</button>
-            <button onclick="appendNumber('9')">9</button>
-            <button class="operator" onclick="appendOperator('-')">-</button>
-            
-            <button onclick="appendNumber('4')">4</button>
-            <button onclick="appendNumber('5')">5</button>
-            <button onclick="appendNumber('6')">6</button>
-            <button class="operator" onclick="appendOperator('+')">+</button>
-            
-            <button onclick="appendNumber('1')">1</button>
-            <button onclick="appendNumber('2')">2</button>
-            <button onclick="appendNumber('3')">3</button>
-            <button class="equals" onclick="calculate()" rowspan="2">=</button>
-            
-            <button class="zero" onclick="appendNumber('0')">0</button>
-            <button onclick="appendDecimal()">.</button>
+        <div class="calculator-main">
+            <div class="display" id="display">0</div>
+            <div class="buttons">
+                <button class="clear" onclick="clearDisplay()">C</button>
+                <button class="operator" onclick="appendOperator('/')">/</button>
+                <button class="operator" onclick="appendOperator('*')">×</button>
+                <button class="operator" onclick="deleteLast()">⌫</button>
+                
+                <button onclick="appendNumber('7')">7</button>
+                <button onclick="appendNumber('8')">8</button>
+                <button onclick="appendNumber('9')">9</button>
+                <button class="operator" onclick="appendOperator('-')">-</button>
+                
+                <button onclick="appendNumber('4')">4</button>
+                <button onclick="appendNumber('5')">5</button>
+                <button onclick="appendNumber('6')">6</button>
+                <button class="operator" onclick="appendOperator('+')">+</button>
+                
+                <button onclick="appendNumber('1')">1</button>
+                <button onclick="appendNumber('2')">2</button>
+                <button onclick="appendNumber('3')">3</button>
+                <button class="equals" onclick="calculate()" rowspan="2">=</button>
+                
+                <button class="zero" onclick="appendNumber('0')">0</button>
+                <button onclick="appendDecimal()">.</button>
+            </div>
         </div>
+        <aside class="history" aria-label="Журнал операций">
+            <div class="history-header">
+                <div class="history-title">
+                    <span>Журнал</span>
+                    <span aria-hidden="true">🧮</span>
+                </div>
+                <button class="history-clear" type="button" onclick="clearHistory()">
+                    Очистить
+                </button>
+            </div>
+            <div id="history-list" class="history-list">
+                <div class="history-empty" id="history-empty">
+                    Пока нет записей. Выполните вычисление, чтобы увидеть его здесь.
+                </div>
+            </div>
+        </aside>
     </div>
 
     <script>
         let display = document.getElementById('display');
         let currentInput = '0';
         let shouldResetDisplay = false;
+        const history = [];
+        const historyList = document.getElementById('history-list');
+        const historyEmpty = document.getElementById('history-empty');
 
         function updateDisplay() {
             display.textContent = currentInput;
@@ -298,6 +427,42 @@
             updateDisplay();
         }
 
+        function addToHistory(expression, result) {
+            history.push({ expression: expression, result: result });
+
+            if (historyEmpty) {
+                historyEmpty.style.display = 'none';
+            }
+
+            const item = document.createElement('div');
+            item.className = 'history-item';
+
+            const exprEl = document.createElement('div');
+            exprEl.className = 'history-expression';
+            exprEl.textContent = expression + ' =';
+
+            const resultEl = document.createElement('div');
+            resultEl.className = 'history-result';
+            resultEl.textContent = result;
+
+            item.appendChild(exprEl);
+            item.appendChild(resultEl);
+
+            historyList.appendChild(item);
+            historyList.scrollTop = historyList.scrollHeight;
+        }
+
+        function clearHistory() {
+            history.length = 0;
+            while (historyList.firstChild) {
+                historyList.removeChild(historyList.firstChild);
+            }
+            if (historyEmpty) {
+                historyEmpty.style.display = 'block';
+                historyList.appendChild(historyEmpty);
+            }
+        }
+
         function calculate() {
             try {
                 // Заменяем × на * для вычисления
@@ -315,11 +480,17 @@
                 
                 if (isNaN(result) || !isFinite(result)) {
                     currentInput = 'Ошибка';
-                } else {
-                    currentInput = result.toString();
+                    updateDisplay();
+                    shouldResetDisplay = true;
+                    return;
                 }
-                
+
+                const shownExpression = currentInput;
+                const shownResult = result.toString();
+
+                currentInput = shownResult;
                 updateDisplay();
+                addToHistory(shownExpression, shownResult);
                 shouldResetDisplay = true;
             } catch (error) {
                 currentInput = 'Ошибка';
