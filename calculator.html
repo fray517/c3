@@ -11,28 +11,76 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-gradient: linear-gradient(
+                135deg,
+                #667eea 0%,
+                #764ba2 100%
+            );
+            --calc-bg: #ffffff;
+            --calc-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            --display-bg: #1a1a1a;
+            --display-color: #ffffff;
+            --button-bg: #f0f0f0;
+            --button-color: #333333;
+            --button-hover-bg: #e0e0e0;
+            --operator-bg: #667eea;
+            --operator-hover-bg: #5568d3;
+            --equals-bg: #764ba2;
+            --equals-hover-bg: #653a8a;
+            --clear-bg: #ff6b6b;
+            --clear-hover-bg: #ee5a5a;
+            --switch-bg: rgba(255, 255, 255, 0.9);
+            --switch-color: #333333;
+        }
+
+        body.dark-theme {
+            --bg-gradient: linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #020617 100%
+            );
+            --calc-bg: #020617;
+            --calc-shadow: 0 20px 60px rgba(15, 23, 42, 0.9);
+            --display-bg: #020617;
+            --display-color: #e5e7eb;
+            --button-bg: #0f172a;
+            --button-color: #e5e7eb;
+            --button-hover-bg: #1f2937;
+            --operator-bg: #4f46e5;
+            --operator-hover-bg: #4338ca;
+            --equals-bg: #a855f7;
+            --equals-hover-bg: #9333ea;
+            --clear-bg: #ef4444;
+            --clear-hover-bg: #dc2626;
+            --switch-bg: rgba(15, 23, 42, 0.9);
+            --switch-color: #e5e7eb;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-gradient);
             padding: 20px;
+            transition: background 0.3s ease;
         }
 
         .calculator {
-            background: #ffffff;
+            background: var(--calc-bg);
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--calc-shadow);
             padding: 30px;
             max-width: 400px;
             width: 100%;
+            position: relative;
         }
 
         .display {
-            background: #1a1a1a;
-            color: #ffffff;
+            background: var(--display-bg);
+            color: var(--display-color);
             font-size: 2.5rem;
             padding: 20px;
             text-align: right;
@@ -46,6 +94,63 @@
             overflow-wrap: break-word;
         }
 
+        .theme-switcher {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--switch-bg);
+            color: var(--switch-color);
+            font-size: 0.85rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            user-select: none;
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 46px;
+            height: 24px;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.6);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .theme-toggle-thumb {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            background: #facc15;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+
+        body.dark-theme .theme-toggle-thumb {
+            transform: translateX(20px);
+            background: #38bdf8;
+        }
+
+        .theme-toggle-icon {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            z-index: 1;
+        }
+
         .buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -53,7 +158,7 @@
         }
 
         button {
-            background: #f0f0f0;
+            background: var(--button-bg);
             border: none;
             border-radius: 10px;
             font-size: 1.5rem;
@@ -61,11 +166,11 @@
             cursor: pointer;
             transition: all 0.2s;
             font-weight: 600;
-            color: #333;
+            color: var(--button-color);
         }
 
         button:hover {
-            background: #e0e0e0;
+            background: var(--button-hover-bg);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
@@ -76,30 +181,30 @@
         }
 
         .operator {
-            background: #667eea;
+            background: var(--operator-bg);
             color: #ffffff;
         }
 
         .operator:hover {
-            background: #5568d3;
+            background: var(--operator-hover-bg);
         }
 
         .equals {
-            background: #764ba2;
+            background: var(--equals-bg);
             color: #ffffff;
         }
 
         .equals:hover {
-            background: #653a8a;
+            background: var(--equals-hover-bg);
         }
 
         .clear {
-            background: #ff6b6b;
+            background: var(--clear-bg);
             color: #ffffff;
         }
 
         .clear:hover {
-            background: #ee5a5a;
+            background: var(--clear-hover-bg);
         }
 
         .zero {
@@ -109,6 +214,14 @@
 </head>
 <body>
     <div class="calculator">
+        <div class="theme-switcher">
+            <span id="theme-label">Тема</span>
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему">
+                <span class="theme-toggle-icon">☀</span>
+                <span class="theme-toggle-icon">🌙</span>
+                <span class="theme-toggle-thumb"></span>
+            </button>
+        </div>
         <div class="display" id="display">0</div>
         <div class="buttons">
             <button class="clear" onclick="clearDisplay()">C</button>
@@ -261,6 +374,49 @@
                 deleteLast();
             }
         });
+
+        const THEME_KEY = 'calculator-theme';
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeLabel = document.getElementById('theme-label');
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeLabel.textContent = 'Тёмная';
+            } else {
+                document.body.classList.remove('dark-theme');
+                themeLabel.textContent = 'Светлая';
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.classList.contains('dark-theme');
+            const nextTheme = isDark ? 'light' : 'dark';
+            applyTheme(nextTheme);
+            try {
+                window.localStorage.setItem(THEME_KEY, nextTheme);
+            } catch (e) {
+                // localStorage недоступен — просто не сохраняем
+            }
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        (function initTheme() {
+            let theme = 'light';
+            try {
+                const stored = window.localStorage.getItem(THEME_KEY);
+                if (stored === 'light' || stored === 'dark') {
+                    theme = stored;
+                } else if (window.matchMedia &&
+                    window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    theme = 'dark';
+                }
+            } catch (e) {
+                // localStorage недоступен — используем дефолт
+            }
+            applyTheme(theme);
+        }());
     </script>
 </body>
 </html>
